@@ -1,0 +1,25 @@
+[build-system]
+requires = [ "poetry-core",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "snakemake-storage-plugin-openbis"
+version = "0.1.0"
+description = ""
+authors = [ "Simone Baffelli <simone.baffelli@empa.ch>",]
+readme = "README.md"
+repository = "https://github.com/your/plugin"
+documentation = "https://snakemake.github.io/snakemake-plugin-catalog/plugins/storage/openbis.html"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+snakemake-interface-common = "^1.17.1"
+snakemake-interface-storage-plugins = "^3.1.1"
+pybis = "^1.36.3"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+flake8 = "^7.0.0"
+coverage = "^7.4.3"
+pytest = "^8.1.1"
+snakemake = "^8.6.0"

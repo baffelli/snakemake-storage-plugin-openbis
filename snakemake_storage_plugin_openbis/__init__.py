@@ -23,6 +23,9 @@ from snakemake_storage_plugin_openbis.openbis.auth import login_anom
 from urllib.parse import urlparse
 
 
+
+
+
 # Optional:
 # Define settings for your storage plugin (e.g. host url, credentials).
 # They will occur in the Snakemake CLI as --storage-<storage-plugin-name>-<param-name>
@@ -115,6 +118,8 @@ class StorageProvider(StorageProviderBase):
                 host=hst, username=un, password=pwd, token=token, anonymous=True
             ):
                 raise ValueError("Both token and username/password provided")
+            case StorageProviderSettings(host=None, username=un, password=pw, token=tk, anonymous=egal):
+                raise ValueError("Invalid settings: missing host")
 
     @classmethod
     def example_queries(cls) -> List[ExampleQuery]:
@@ -123,13 +128,13 @@ class StorageProvider(StorageProviderBase):
         return [
             ExampleQuery(
                 description="Get all the contents of the dataset attached to a sample (object)",
-                query="openbis://openbis-server/space/project/object/RAW_DATA",
-                query_type=QueryType.ANY,
+                query="https://openbis-server/space/project/object/RAW_DATA",
+                type=QueryType.ANY,
             ),
             ExampleQuery(
                 description="Get a file from a dataset identfied by its permid",
-                query="openbis://openbis-server/20210705210000226-747/a.txt",
-                query_type=QueryType.INPUT,
+                query="https://openbis-server/20210705210000226-747/a.txt",
+                type=QueryType.INPUT,
             ),
         ]
 
@@ -140,16 +145,16 @@ class StorageProvider(StorageProviderBase):
         E.g. for a storage provider like http that would be the host name.
         For s3 it might be just the endpoint URL.
         """
-        None
+        return None
 
     def default_max_requests_per_second(self) -> float:
         """Return the default maximum number of requests per second for this storage
         provider."""
-        10
+        return 10
 
     def use_rate_limiter(self) -> bool:
         """Return False if no rate limiting is needed for this provider."""
-        False
+        return False
 
     @classmethod
     def is_valid_query(cls, query: str) -> StorageQueryValidationResult:
@@ -158,8 +163,11 @@ class StorageProvider(StorageProviderBase):
         # and considered valid. The wildcards will be resolved before the storage
         # object is actually used.
         parsed = urlparse(query)
-        if parsed.scheme != "openbis":
-            return StorageQueryValidationResult(valid=False, reason="Invalid scheme, only openbis:// is allowed")
+        print(parsed)
+        if parsed.scheme != "https":
+            return StorageQueryValidationResult(query=query, valid=False, reason="Invalid scheme, only https:// is allowed")
+        else:
+            return StorageQueryValidationResult(query=query, valid=True)
 
 
 # Required:

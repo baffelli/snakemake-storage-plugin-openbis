@@ -15,11 +15,11 @@ class TestStorage(TestStorageBase):
     def get_query(self, tmp_path) -> str:
         # Return a query. If retrieve_only is True, this should be a query that
         # is present in the storage, as it will not be created.
-        "openbis://openbis-eln-lims.ethz.ch/DIANA_OTTOZ/INDUCIBLE_TRANSCRIPTION_FACTOR/FC_LEXA-ER-B42/RAW_DATA"
+        return "https://openbis-eln-lims.ethz.ch/DIANA_OTTOZ/INDUCIBLE_TRANSCRIPTION_FACTOR/FC_LEXA-ER-B42/RAW_DATA"
 
     def get_query_not_existing(self, tmp_path) -> str:
         # Return a query that is not present in the storage.
-        "openbis://openbis-eln-lims.ethz.ch/sdfB42/RAW_DATA"
+        return "https://openbis-eln-lims.ethz.ch/sdfB42/RAW_DATA"
 
     def get_storage_provider_cls(self) -> Type[StorageProviderBase]:
         # Return the StorageProvider class of this plugin
